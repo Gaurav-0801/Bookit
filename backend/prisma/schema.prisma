@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  bookings Booking[]
+
+  @@map("users")
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  location    String
+  price       Decimal  @db.Decimal(10, 2)
+  imageUrl    String
+  category    String
+  rating      Float    @default(0)
+  duration    Int      // Duration in minutes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  slots    Slot[]
+  bookings Booking[]
+
+  @@map("experiences")
+}
+
+model Slot {
+  id          String   @id @default(cuid())
+  experienceId String
+  date        DateTime @db.Date
+  startTime   String   // Format: "HH:MM"
+  endTime     String   // Format: "HH:MM"
+  capacity    Int
+  bookedCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
+
+  @@unique([experienceId, date, startTime])
+  @@map("slots")
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  userId       String
+  experienceId String
+  slotId       String
+  bookingDate  DateTime @default(now())
+  status       BookingStatus @default(CONFIRMED)
+  totalPrice   Decimal  @db.Decimal(10, 2)
+  promoCode    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  slot       Slot       @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@map("bookings")
+}
+
+model PromoCode {
+  id            String      @id @default(cuid())
+  code          String      @unique
+  discountType  DiscountType
+  discountValue Decimal     @db.Decimal(10, 2)
+  validFrom     DateTime
+  validTo       DateTime
+  active        Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("promo_codes")
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FLAT
+}
