@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { experienceAPI, promoAPI, bookingAPI } from '../../../lib/api';
 import { useAuth } from '../../../contexts/AuthContext';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import type { Experience, Slot, PromoCode } from '../../../types';
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, isAuthenticated } = useAuth();
@@ -291,6 +291,18 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }
 
