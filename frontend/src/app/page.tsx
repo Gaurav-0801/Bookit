@@ -48,7 +48,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
         
-        <div className="relative w-full px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 pt-20 lg:pt-32 pb-28 lg:pb-36">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
               Discover Amazing
