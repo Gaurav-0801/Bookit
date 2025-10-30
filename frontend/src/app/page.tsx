@@ -61,7 +61,7 @@ export default function HomePage() {
             </p>
             
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto animate-slide-up pb-6 md:pb-8">
+            <div className="max-w-2xl mx-auto animate-slide-up mb-8 md:mb-10">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
