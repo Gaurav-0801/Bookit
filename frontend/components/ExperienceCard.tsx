@@ -33,7 +33,7 @@ export default function ExperienceCard({ experience }: ExperienceCardProps) {
               ${price.toFixed(2)}
             </span>
           </div>
-dsfsdf
+
           {/* Category Badge */}
           <div className="absolute top-4 left-4">
             <span className="inline-block px-3 py-1.5 text-xs font-semibold text-white bg-primary/90 backdrop-blur-sm rounded-full shadow-md">
