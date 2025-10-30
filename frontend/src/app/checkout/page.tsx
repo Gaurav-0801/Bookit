@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { experienceAPI, promoAPI, bookingAPI } from '../../../lib/api';
 import { useAuth } from '../../../contexts/AuthContext';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import Card from '../../../components/ui/Card';
 import type { Experience, Slot, PromoCode } from '../../../types';
 
 function CheckoutContent() {
@@ -142,9 +143,14 @@ function CheckoutContent() {
   const discount = basePrice - finalPrice;
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+    <div className="relative min-h-screen bg-linear-to-br from-surface via-white to-primary-light py-12 overflow-hidden">
+      {/* Decorative background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-primary-dark/15 blur-3xl" />
+      </div>
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-8 tracking-tight">Checkout</h1>
 
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -156,7 +162,7 @@ function CheckoutContent() {
           {/* Left: Booking Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* User Information */}
-            <div className="bg-white rounded-xl shadow-md p-6">
+            <Card>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 Your Information
               </h2>
@@ -176,25 +182,25 @@ function CheckoutContent() {
                   </div>
                 )}
               </div>
-            </div>
+            </Card>
 
             {/* Promo Code */}
-            <div className="bg-white rounded-xl shadow-md p-6">
+            <Card>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 Promo Code
               </h2>
-              <div className="flex space-x-3">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
                   placeholder="Enter code"
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary/50 outline-none placeholder:text-gray-400"
                 />
                 <button
                   onClick={handleApplyPromo}
                   disabled={promoLoading || !promoCode.trim()}
-                  className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-linear-to-r from-primary to-primary-dark text-white rounded-xl font-semibold hover:from-primary-dark hover:to-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {promoLoading ? 'Applying...' : 'Apply'}
                 </button>
@@ -212,15 +218,15 @@ function CheckoutContent() {
               )}
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-gray-700">
-                  <strong>Try these codes:</strong> SAVE10, FLAT100, WELCOME20
+                  <span className="font-semibold">Try these codes:</span> <span className="font-mono">SAVE10</span>, <span className="font-mono">FLAT100</span>, <span className="font-mono">WELCOME20</span>
                 </p>
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Right: Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-md p-6 sticky top-24">
+            <Card className="sticky top-24">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 Booking Summary
               </h2>
@@ -255,7 +261,7 @@ function CheckoutContent() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200 space-y-2">
+                <div className="pt-4 border-top border-gray-200 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Base Price</span>
                     <span className="font-medium">${basePrice.toFixed(2)}</span>
@@ -278,7 +284,7 @@ function CheckoutContent() {
               <button
                 onClick={handleConfirmBooking}
                 disabled={bookingLoading}
-                className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-linear-to-r from-primary to-primary-dark text-white py-4 rounded-xl font-semibold text-lg hover:from-primary-dark hover:to-primary focus:ring-4 focus:ring-primary/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {bookingLoading ? 'Processing...' : 'Confirm Booking'}
               </button>
@@ -286,7 +292,7 @@ function CheckoutContent() {
               <p className="mt-4 text-xs text-gray-500 text-center">
                 By confirming, you agree to our terms and conditions
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

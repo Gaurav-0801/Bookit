@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { experienceAPI } from '../../../../lib/api';
 import { useAuth } from '../../../../contexts/AuthContext';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
+import Card from '../../../../components/ui/Card';
 import type { Experience, Slot } from '../../../../types';
 import { format, parseISO } from 'date-fns';
 
@@ -90,8 +91,13 @@ export default function ExperienceDetailsPage() {
       : experience.price;
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-linear-to-br from-surface via-white to-primary-light py-12 overflow-hidden">
+      {/* Decorative background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-primary-dark/15 blur-3xl" />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <div className="mb-6">
           <button
@@ -105,11 +111,11 @@ export default function ExperienceDetailsPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left: Image and Details */}
           <div>
             {/* Image */}
-            <div className="relative h-96 rounded-xl overflow-hidden shadow-lg mb-6">
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-black/5 mb-6">
               <Image
                 src={experience.imageUrl}
                 alt={experience.title}
@@ -120,7 +126,7 @@ export default function ExperienceDetailsPage() {
             </div>
 
             {/* Details */}
-            <div className="bg-white rounded-xl shadow-md p-6">
+            <Card>
               <div className="flex items-center justify-between mb-4">
                 <span className="px-4 py-2 bg-blue-50 text-primary font-medium rounded-full">
                   {experience.category}
@@ -133,7 +139,7 @@ export default function ExperienceDetailsPage() {
                 </div>
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              <h1 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">
                 {experience.title}
               </h1>
 
@@ -154,16 +160,16 @@ export default function ExperienceDetailsPage() {
               </div>
 
               <p className="text-gray-700 leading-relaxed">{experience.description}</p>
-            </div>
+            </Card>
           </div>
 
           {/* Right: Slot Selection */}
           <div>
-            <div className="bg-white rounded-xl shadow-md p-6 sticky top-24">
+            <Card className="sticky top-24">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-bold text-gray-900">Select Date & Time</h2>
-                  <div className="text-3xl font-bold text-primary">${price.toFixed(2)}</div>
+                  <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Select Date & Time</h2>
+                  <div className="text-3xl font-extrabold text-primary">${price.toFixed(2)}</div>
                 </div>
                 <p className="text-sm text-gray-600">per person</p>
               </div>
@@ -173,7 +179,7 @@ export default function ExperienceDetailsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Choose Date
                 </label>
-                <div className="grid grid-cols-7 gap-2 max-h-48 overflow-y-auto">
+                <div className="grid grid-cols-7 gap-3 max-h-56 overflow-y-auto pr-1">
                   {uniqueDates.map((date) => {
                     const dateObj = parseISO(date);
                     const isSelected = selectedDate === date;
@@ -184,9 +190,9 @@ export default function ExperienceDetailsPage() {
                           setSelectedDate(date);
                           setSelectedSlot(null);
                         }}
-                        className={`p-2 rounded-lg text-center transition-colors ${
+                        className={`p-3 rounded-xl text-center transition-colors shadow-sm ring-1 ring-transparent ${
                           isSelected
-                            ? 'bg-primary text-white'
+                            ? 'bg-primary text-white shadow-primary/30 ring-primary/40'
                             : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                         }`}
                       >
@@ -207,7 +213,7 @@ export default function ExperienceDetailsPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Choose Time Slot
                   </label>
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
                     {slotsForSelectedDate && slotsForSelectedDate.length > 0 ? (
                       slotsForSelectedDate.map((slot) => {
                         const isSelected = selectedSlot?.id === slot.id;
@@ -219,12 +225,12 @@ export default function ExperienceDetailsPage() {
                             key={slot.id}
                             onClick={() => !isSoldOut && setSelectedSlot(slot)}
                             disabled={isSoldOut}
-                            className={`w-full p-4 rounded-lg border-2 transition-all ${
+                            className={`w-full p-4 rounded-xl border-2 transition-all ${
                               isSoldOut
-                                ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-50'
+                                ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60'
                                 : isSelected
-                                ? 'border-primary bg-blue-50'
-                                : 'border-gray-200 hover:border-primary'
+                                ? 'border-primary bg-blue-50 shadow-md'
+                                : 'border-gray-200 hover:border-primary hover:shadow-sm'
                             }`}
                           >
                             <div className="flex items-center justify-between">
@@ -262,7 +268,7 @@ export default function ExperienceDetailsPage() {
               <button
                 onClick={handleBookNow}
                 disabled={!selectedSlot}
-                className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-linear-to-r from-primary to-primary-dark text-white py-4 rounded-xl font-semibold text-lg hover:from-primary-dark hover:to-primary focus:ring-4 focus:ring-primary/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {!isAuthenticated
                   ? 'Login to Book'
@@ -270,7 +276,7 @@ export default function ExperienceDetailsPage() {
                   ? 'Select a Time Slot'
                   : 'Book Now'}
               </button>
-            </div>
+            </Card>
           </div>
         </div>
       </div>
