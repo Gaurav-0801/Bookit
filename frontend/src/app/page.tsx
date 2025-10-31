@@ -48,7 +48,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
         
-        <div className="relative w-full px-4 sm:px-6 lg:px-8 pt-20 lg:pt-32 pb-28 lg:pb-36">
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 pt-20 lg:pt-32 pb-16 lg:pb-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
               Discover Amazing
@@ -61,7 +61,7 @@ export default function HomePage() {
             </p>
             
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto animate-slide-up mb-8 md:mb-10">
+            <div className="max-w-2xl mx-auto animate-slide-up mb-12 md:mb-16">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,8 +81,11 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Spacer between hero and filters */}
+      <div className="h-12 md:h-16 bg-surface"></div>
+
       {/* Filters Section */}
-      <div className="bg-white border-b border-border-light sticky top-16 z-40 mt-6 md:mt-8">
+      <div className="bg-white border-b border-border-light sticky top-16 z-40">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
           {/* Category Filters */}
           <div className="flex flex-wrap gap-3 justify-center">
